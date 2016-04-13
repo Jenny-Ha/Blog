@@ -3,15 +3,15 @@
     include("conexion.php");
     
     //hacer el query(consulta ) para traer los datos
-    $consulta = mysql_query("select * from posts order by id desc ")or die(mysql_error());
+    $resultado = mysql_query("select * from posts order by id desc limit 10")or die(mysql_error());
    
    //Indexa el resultado de la BD en un arreglo 
-    $registro = mysql_fetch_array($consulta);
+    $registro = mysql_fetch_array($resultado);
       
     /*
     //echo $registro['Title']."<br>"."<hr>";
      
-     echo "- varDump de Consulta".var_dump($consulta);
+     echo "- varDump de Consulta".var_dump($resultado);
      echo "<hr>";
      echo "- varDump de Resgistro".var_dump($registro);
      echo "<hr>";
@@ -32,7 +32,7 @@
      echo "<hr>";
      echo "El largo de este array Registro es  " . count($registro) . " Incluye los indices numericos y los key";
      echo "<hr>";
-     echo "El largo de este array Consulta es  " . count($consulta) . " Consulta no es un array?";
+     echo "El largo de este array Consulta es  " . count($resultado) . " Consulta no es un array?";
      echo "<hr>";
      
      //Usando un foreach para un array asociativo
@@ -73,28 +73,27 @@
         echo "<tr><td>$i.</td>
                 <td>$tituloPost</td>
                 <td>
-                <a target='_blank' href='../blog/post.php?id=$id' >Leer más </a>
+                <a target='_blank' href='../blog/post.php?id=$id'> Leer más </a>
                 </td></tr>";
         $i++;   
-    } while ($i<=10 && $registro = mysql_fetch_array($consulta));
+    } while ($registro = mysql_fetch_array($resultado));
     
-    /*
-    #Uso de FOR para mostrar las ultimas 10 entradas
-    $registro = mysql_fetch_array($consulta);
+    /* #Uso de FOR para mostrar las entradas*/
+        
+    mysql_data_seek($resultado, 0);
+
+    //$registro = mysql_fetch_array($resultado);
     
-    for($i = 1; $i<=10 && $registro; $i++ ){
-        #$registro = mysql_fetch_array($consulta);
+    for($i = 1;  $registro = mysql_fetch_array($resultado); $i++ ){
         $tituloPost = $registro['Title'];
-        //id es lo que tendras que poner en la barra de direcciones
+        
         $id = $registro['ID'];
         echo "<table border>";
         echo "<tr><td>$i.</td>
                 <td>$tituloPost</td>
-                <td><a href='../blog/post.php?id=<?php echo $id ?>'>Leer más </a></td></tr>";
+                <td><a href='../blog/post.php?id=$id'> Leer más </a></td></tr>";
         echo "</table>";
-        $i++;   
-    }
-    */        
+    }    
     ?>
     </table>
      

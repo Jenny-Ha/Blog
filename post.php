@@ -5,12 +5,14 @@
    //Obtener id del post
         $id = $_GET['id']; 
         $_id = mysql_real_escape_string($id);
+        echo $_id;
    
    //hacer el query(consulta ) para traer los datos(REsult)
-        $consulta = mysql_query("select * from posts where ID = '$_id' ")or die(mysql_error());
+        $consulta = mysql_query("select * from posts where id = ".$_id)or die(mysql_error());
     
    //Indexa el resultado de la BD en un arreglo (Fila)
         $registro = mysql_fetch_array($consulta);
+        var_dump($registro);
    
    /* 
     echo "- varDump de Consulta" . var_dump($consulta);
